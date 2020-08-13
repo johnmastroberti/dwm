@@ -15,12 +15,12 @@ static const char *fonts[]          = { "JetBrainsMono-Regular:size=22",
                                         "DejaVuSansMono Nerd Font:size=22",
                                         "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
 static char dmenufont[]             = "JetBrainsMono-Regular:size=22";
-static char normbgcolor[]           = "#222222";
+static char normbgcolor[]           = "#171c28";
 static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#3341ee";
-static char selbgcolor[]            = "#3341ee";
+static char normfgcolor[]           = "#5ccfe6";
+static char selfgcolor[]            = "#171c28";
+static char selbordercolor[]        = "#5ccfe6";
+static char selbgcolor[]            = "#5ccfe6";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -40,7 +40,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -114,11 +114,9 @@ static const char *termcmd[]  = { "st", NULL };
 #include "shiftview.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+  // Basic stack/tag control
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
-	/* { MODKEY|ShiftMask,		XK_Escape,	spawn,	SHCMD("") }, */
-	{ MODKEY,			XK_grave,	spawn,	SHCMD("dmenuunicode") },
-	/* { MODKEY|ShiftMask,		XK_grave,	togglescratch,	SHCMD("") }, */
 	TAGKEYS(			XK_1,		0)
 	TAGKEYS(			XK_2,		1)
 	TAGKEYS(			XK_3,		2)
@@ -130,97 +128,70 @@ static Key keys[] = {
 	TAGKEYS(			XK_9,		8)
 	{ MODKEY,			XK_0,		view,		{.ui = ~0 } },
 	{ MODKEY|ShiftMask,		XK_0,		tag,		{.ui = ~0 } },
-	{ MODKEY,			XF86XK_AudioLowerVolume	,	spawn,		SHCMD("amixer sset Master 10%- ; pkill -RTMIN+10 dwmblocks") },
-	{ MODKEY,			XF86XK_AudioRaiseVolume	,	spawn,		SHCMD("amixer sset Master 10%+ ; pkill -RTMIN+10 dwmblocks") },
-	{ MODKEY,		  XF86XK_AudioMute,		spawn,		SHCMD("amixer sset Master toggle ; pkill -RTMIN+10 dwmblocks") },
-	//{ MODKEY,			XK_BackSpace,	spawn,		SHCMD("sysact") },
-	//{ MODKEY|ShiftMask,		XK_BackSpace,	spawn,		SHCMD("sysact") },
 
-	//{ MODKEY,			XK_Tab,		view,		{0} },
-	/* { MODKEY|ShiftMask,		XK_Tab,		spawn,		SHCMD("") }, */
-	{ MODKEY,			XK_q,		killclient,	{0} },
-	//{ MODKEY|ShiftMask,		XK_q,		spawn,		SHCMD("sysact") },
-	{ MODKEY,			XK_w,		spawn,		SHCMD("$BROWSER") },
-	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} }, /* tile */
+  // Layouts
+	{ MODKEY,			        XK_t,		setlayout,	{.v = &layouts[0]} }, /* tile */
 	{ MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[1]} }, /* bstack */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} }, /* monocle */
 
-	{ MODKEY,			XK_s,		togglesticky,	{0} },
-	{ MODKEY,			XK_space,		spawn,          {.v = dmenucmd } },
-	{ MODKEY,			XK_f,		togglefullscr,	{0} },
-	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
-	/* J and K are automatically bound above in STACKEYS */
-	{ MODKEY,			XK_l,		setmfact,      	{.f = +0.05} },
-	{ MODKEY,			XK_Return,	spawn,		{.v = termcmd } },
-	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0} },
-
-	{ MODKEY,			XK_b,		togglebar,	{0} },
-
-	{ MODKEY,			XK_comma,	focusmon,	{.i = -1 } },
-	{ MODKEY|ShiftMask,		XK_comma,	tagmon,		{.i = -1 } },
-	{ MODKEY,			XK_period,	focusmon,	{.i = +1 } },
+  // Monitors
+	{ MODKEY,			        XK_comma,	  focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,		XK_comma,	  tagmon,		{.i = -1 } },
+	{ MODKEY,			        XK_period,	focusmon,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_period,	tagmon,		{.i = +1 } },
-
-
-	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
-
-	//{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-	//{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-	//{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
-	{ 0,	XF86XK_AudioMute,	spawn,		SHCMD("amixer sset Master toggle ; pkill -RTMIN+10 dwmblocks") },
-	{ 0,	XF86XK_AudioRaiseVolume,	spawn,		SHCMD("amixer sset Master 5%+ ; pkill -RTMIN+10 dwmblocks") },
-	{ 0,	XF86XK_AudioLowerVolume,	spawn,		SHCMD("amixer sset Master 5%- ; pkill -RTMIN+10 dwmblocks") },
-	{ 0, XF86XK_AudioPrev,		spawn,		SHCMD("mpc prev") },
-	{ 0, XF86XK_AudioNext,		spawn,		SHCMD("mpc next") },
-	{ 0, XF86XK_AudioPause,		spawn,		SHCMD("mpc pause") },
-	{ 0, XF86XK_AudioPlay,		spawn,		SHCMD("mpc play") },
-	{ 0, XF86XK_AudioStop,		spawn,		SHCMD("mpc stop") },
-	{ 0, XF86XK_AudioRewind,	spawn,		SHCMD("mpc seek -10") },
-	{ 0, XF86XK_AudioForward,	spawn,		SHCMD("mpc seek +10") },
-	{ 0, XF86XK_AudioMedia,		spawn,		SHCMD("st -e ncmpcpp") },
-	{ 0, XF86XK_PowerOff,		spawn,		SHCMD("sysact") },
-	{ 0, XF86XK_Calculator,		spawn,		SHCMD("st -e bc -l") },
-	{ 0, XF86XK_Sleep,		spawn,		SHCMD("sudo -A zzz") },
-	{ 0, XF86XK_WWW,		spawn,		SHCMD("$BROWSER") },
-	{ 0, XF86XK_DOS,		spawn,		SHCMD("st") },
-	{ 0, XF86XK_ScreenSaver,	spawn,		SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
-	{ 0, XF86XK_TaskPane,		spawn,		SHCMD("st -e htop") },
-	{ 0, XF86XK_Mail,		spawn,		SHCMD("st -e neomutt ; pkill -RTMIN+12 dwmblocks") },
-	{ 0, XF86XK_MyComputer,		spawn,		SHCMD("st -e lf /") },
-	/* { 0, XF86XK_Battery,		spawn,		SHCMD("") }, */
-	{ 0, XF86XK_Launch1,		spawn,		SHCMD("xset dpms force off") },
-	{ 0, XF86XK_TouchpadToggle,	spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
-	{ 0, XF86XK_TouchpadOff,	spawn,		SHCMD("synclient TouchpadOff=1") },
-	{ 0, XF86XK_TouchpadOn,		spawn,		SHCMD("synclient TouchpadOff=0") },
-	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("xbacklight -inc 15") },
-	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("xbacklight -dec 15") },
-
-	/* { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } }, */
-	/* { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } }, */
-	/* { MODKEY|Mod4Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } }, */
-	/* { MODKEY|Mod4Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } }, */
-	/* { MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } }, */
-	/* { MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } }, */
-	/* { MODKEY|Mod4Mask|ShiftMask,    XK_0,      defaultgaps,    {0} }, */
-	/* { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } }, */
-	/* { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } }, */
-	/* { MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } }, */
-	/* { MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } }, */
-	/* { MODKEY|Mod4Mask,              XK_y,      incrohgaps,     {.i = +1 } }, */
-	/* { MODKEY|Mod4Mask,              XK_o,      incrohgaps,     {.i = -1 } }, */
-	/* { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } }, */
-	/* { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } }, */
-
-  // App shortcuts
-	{ HYPERKEY,			XK_f,		spawn,		SHCMD("$BROWSER") },
-	{ HYPERKEY,			XK_d,		spawn,		SHCMD("discord") },
-	{ HYPERKEY,			XK_q,		spawn,		SHCMD("qtcreator") },
 
   // Quit, restart etc
 	{ MODKEY|AltMask,			XK_q,		spawn,	SHCMD("kill -TERM $(pidof -s dwm)") },
 	{ MODKEY|AltMask,			XK_r,		spawn,	SHCMD("kill -HUP $(pidof -s dwm)") },
-  { MODKEY|AltMask, XK_s,     spawn,    SHCMD("notify-send \"Going to sleep...\"; systemctl suspend") },
-  { MODKEY|AltMask, XK_x,     spawn,    SHCMD("prompt \"Shutdown now?\" \"shutdown now\"") },
+  { MODKEY|AltMask,     XK_s,   spawn,  SHCMD("notify-send \"Going to sleep...\"; systemctl suspend") },
+  { MODKEY|AltMask,     XK_x,   spawn,  SHCMD("prompt \"Shutdown now?\" \"shutdown now\"") },
+
+  // Misc window manager commands
+	{ MODKEY,			XK_q,		killclient,	{0} },
+	{ MODKEY,			XK_s,		togglesticky,	{0} },
+	{ MODKEY,			XK_f,		togglefullscr,	{0} },
+	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
+	{ MODKEY,			XK_l,		setmfact,      	{.f = +0.05} },
+	{ MODKEY,			XK_b,		togglebar,	{0} },
+	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
+
+
+  // Media keys
+	{ MODKEY,			XF86XK_AudioLowerVolume	,	spawn,		SHCMD("amixer sset Master 10%- ; pkill -RTMIN+10 dwmblocks") },
+	{ MODKEY,			XF86XK_AudioRaiseVolume	,	spawn,		SHCMD("amixer sset Master 10%+ ; pkill -RTMIN+10 dwmblocks") },
+	{ MODKEY,		  XF86XK_AudioMute,		      spawn,		SHCMD("amixer sset Master toggle ; pkill -RTMIN+10 dwmblocks") },
+	{ 0,	XF86XK_AudioLowerVolume,	spawn,		SHCMD("amixer sset Master 5%- ; pkill -RTMIN+10 dwmblocks") },
+	{ 0,	XF86XK_AudioRaiseVolume,	spawn,		SHCMD("amixer sset Master 5%+ ; pkill -RTMIN+10 dwmblocks") },
+	{ 0,	XF86XK_AudioMute,	        spawn,		SHCMD("amixer sset Master toggle ; pkill -RTMIN+10 dwmblocks") },
+	{ 0,  XF86XK_AudioPrev,		      spawn,		SHCMD("mpc prev") },
+	{ 0,  XF86XK_AudioNext,		      spawn,		SHCMD("mpc next") },
+	{ 0,  XF86XK_AudioPause,		    spawn,		SHCMD("mpc pause") },
+	{ 0,  XF86XK_AudioPlay,		      spawn,		SHCMD("mpc play") },
+	{ 0,  XF86XK_AudioStop,		      spawn,		SHCMD("mpc stop") },
+	{ 0,  XF86XK_AudioRewind,	      spawn,		SHCMD("mpc seek -10") },
+	{ 0,  XF86XK_AudioForward,	    spawn,		SHCMD("mpc seek +10") },
+
+  // Other function keys
+	{ 0, XF86XK_MonBrightnessUp,	  spawn,		SHCMD("xbacklight -inc 15") },
+	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("xbacklight -dec 15") },
+  // TODO: keyboard backlight
+
+
+  // Terminal
+	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0}       },
+	{ MODKEY,			        XK_Return,	spawn,		      {.v = termcmd } },
+
+  // App shortcuts
+	{ HYPERKEY,			XK_f,		spawn,		SHCMD("$BROWSER")   },
+	{ HYPERKEY,			XK_d,		spawn,		SHCMD("discord")    },
+	{ HYPERKEY,			XK_q,		spawn,		SHCMD("qtcreator")  },
+	{ HYPERKEY,			XK_t,		spawn,		SHCMD("toggletray") },
+
+  // Dmenu scripts
+	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
+  { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
+  { HYPERKEY,     XK_s,       spawn,    SHCMD("dmenuscripts")  },
+  { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode")  },
 
 };
 
