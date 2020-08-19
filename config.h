@@ -61,7 +61,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
@@ -192,6 +192,7 @@ static Key keys[] = {
   { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
   { HYPERKEY,     XK_s,       spawn,    SHCMD("dmenuscripts")  },
   { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode")  },
+  { HYPERKEY,     XK_g,       spawn,    SHCMD("dmenugeant")  },
 
 };
 
