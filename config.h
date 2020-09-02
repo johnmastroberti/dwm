@@ -190,9 +190,11 @@ static Key keys[] = {
   // Dmenu scripts
 	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
   { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
-  { HYPERKEY,     XK_s,       spawn,    SHCMD("dmenuscripts")  },
-  { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode")  },
-  { HYPERKEY,     XK_g,       spawn,    SHCMD("dmenugeant")  },
+  { HYPERKEY,     XK_s,       spawn,    SHCMD("dmenuscripts") },
+  { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode") },
+  { HYPERKEY,     XK_g,       spawn,    SHCMD("dmenugeant")   },
+  { HYPERKEY,     XK_slash,   spawn,    SHCMD("dmenusearch")  },
+  { HYPERKEY,     XK_m,       spawn,    SHCMD("dmenuman")  },
 
 };
 
