@@ -189,6 +189,7 @@ static Key keys[] = {
 
   // Classes
   { HYPERKEY,     XK_n,       spawn,    SHCMD("new_notes")  },
+  { HYPERKEY,     XK_h,       spawn,    SHCMD("new_hw")  },
 
   // Dmenu scripts
 	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
