@@ -187,6 +187,9 @@ static Key keys[] = {
 	{ HYPERKEY,			XK_q,		spawn,		SHCMD("qtcreator")  },
 	{ HYPERKEY,			XK_t,		spawn,		SHCMD("toggletray") },
 
+  // Classes
+  { HYPERKEY,     XK_n,       spawn,    SHCMD("new_notes")  },
+
   // Dmenu scripts
 	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
   { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
