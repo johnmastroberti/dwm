@@ -15,12 +15,18 @@ static const char *fonts[]          = { "JetBrainsMono-Regular:size=22",
                                         "DejaVuSansMono Nerd Font:size=22",
                                         "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
 static char dmenufont[]             = "JetBrainsMono-Regular:size=22";
-static char normbgcolor[]           = "#171c28";
+//static char normbgcolor[]           = "#171c28";
+//static char normbordercolor[]       = "#444444";
+//static char normfgcolor[]           = "#5ccfe6";
+//static char selfgcolor[]            = "#171c28";
+//static char selbordercolor[]        = "#5ccfe6";
+//static char selbgcolor[]            = "#5ccfe6";
+static char normfgcolor[]           = "#a5a2a2";
 static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#5ccfe6";
-static char selfgcolor[]            = "#171c28";
-static char selbordercolor[]        = "#5ccfe6";
-static char selbgcolor[]            = "#5ccfe6";
+static char normbgcolor[]           = "#090300";
+static char selbgcolor[]            = "#a5a2a2";
+static char selbordercolor[]        = "#fded02";
+static char selfgcolor[]            = "#090300";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -48,7 +54,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	*/
 	/* class    instance      title       	 tags mask    isfloating   isterminal  noswallow  monitor */
-	{ "Gimp",     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
+	{ "Thunderbird",     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "zoom",     NULL,       NULL,       	    0,            1,           0,         0,        -1 },
 	{ "trayer",   NULL,       NULL,       	    (1 << 9)-1,   0,           0,         0,        -1 },
 	{ "St",       NULL,       NULL,       	    0,            0,           1,         0,        -1 },
@@ -182,23 +188,27 @@ static Key keys[] = {
 	{ MODKEY,			        XK_Return,	spawn,		      {.v = termcmd } },
 
   // App shortcuts
-	{ HYPERKEY,			XK_f,		spawn,		SHCMD("$BROWSER")   },
+	{ HYPERKEY,			XK_b,		spawn,		SHCMD("$BROWSER")   },
+	{ HYPERKEY,			XK_f,		spawn,		SHCMD("$FILE")   },
 	{ HYPERKEY,			XK_d,		spawn,		SHCMD("discord")    },
+	{ HYPERKEY,			XK_s,		spawn,		SHCMD("killall slack ; slack")    },
 	{ HYPERKEY,			XK_q,		spawn,		SHCMD("qtcreator")  },
 	{ HYPERKEY,			XK_t,		spawn,		SHCMD("toggletray") },
 
   // Classes
   { HYPERKEY,     XK_n,       spawn,    SHCMD("new_notes")  },
   { HYPERKEY,     XK_h,       spawn,    SHCMD("new_hw")  },
+  { HYPERKEY,     XK_z,       spawn,    SHCMD("open_zoom")  },
 
   // Dmenu scripts
 	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
   { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
-  { HYPERKEY,     XK_s,       spawn,    SHCMD("dmenuscripts") },
+  { HYPERKEY|ShiftMask,     XK_s,       spawn,    SHCMD("dmenuscripts") },
   { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode") },
   { HYPERKEY,     XK_g,       spawn,    SHCMD("dmenugeant")   },
   { HYPERKEY,     XK_slash,   spawn,    SHCMD("dmenusearch")  },
   { HYPERKEY,     XK_m,       spawn,    SHCMD("dmenuman")  },
+  { HYPERKEY,     XK_l,       spawn,    SHCMD("dmenulatex")  },
 
 };
 
