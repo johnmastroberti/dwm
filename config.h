@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -11,22 +11,22 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrainsMono-Regular:size=22",
-                                        "DejaVuSansMono Nerd Font:size=22",
+static const char *fonts[]          = { "JetBrainsMono-Regular:size=16",
+                                        "DejaVuSansMono Nerd Font:size=16",
                                         "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
-static char dmenufont[]             = "JetBrainsMono-Regular:size=22";
+static char dmenufont[]             = "JetBrainsMono-Regular:size=16";
 //static char normbgcolor[]           = "#171c28";
 //static char normbordercolor[]       = "#444444";
 //static char normfgcolor[]           = "#5ccfe6";
 //static char selfgcolor[]            = "#171c28";
 //static char selbordercolor[]        = "#5ccfe6";
 //static char selbgcolor[]            = "#5ccfe6";
-static char normfgcolor[]           = "#a5a2a2";
-static char normbordercolor[]       = "#444444";
-static char normbgcolor[]           = "#090300";
-static char selbgcolor[]            = "#a5a2a2";
-static char selbordercolor[]        = "#fded02";
-static char selfgcolor[]            = "#090300";
+static char normfgcolor[]           = "#f7f7f7";
+static char normbordercolor[]       = "#2a2926";
+static char normbgcolor[]           = "#2a2926";
+static char selbgcolor[]            = "#9c5e21";
+static char selbordercolor[]        = "#9c5e21";
+static char selfgcolor[]            = "#f7f7f7";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -54,7 +54,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	*/
 	/* class    instance      title       	 tags mask    isfloating   isterminal  noswallow  monitor */
-	{ "Thunderbird",     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
+	{ "Evolution",     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "zoom",     NULL,       NULL,       	    0,            1,           0,         0,        -1 },
 	{ "trayer",   NULL,       NULL,       	    (1 << 9)-1,   0,           0,         0,        -1 },
 	{ "St",       NULL,       NULL,       	    0,            0,           1,         0,        -1 },
@@ -62,6 +62,9 @@ static const Rule rules[] = {
 	{ NULL,       "popup",    NULL,       	    0,            1,           0,         1,        -1 },
 	{ NULL,       NULL,       "popup",       	  0,            1,           0,         1,        -1 },
 	{ NULL,       NULL,       "Event Tester",   0,            0,           0,         1,        -1 },
+	{ "ROOT",     NULL,       NULL,             0,            0,           0,         1,        -1 },
+	{ "GLViewer",     NULL,       NULL,             0,            0,           0,         1,        -1 },
+	{ "CENNS",     NULL,       NULL,             0,            0,           0,         1,        -1 },
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
 };
@@ -149,6 +152,7 @@ static Key keys[] = {
   // Quit, restart etc
 	{ MODKEY|AltMask,			XK_q,		spawn,	SHCMD("kill -TERM $(pidof -s dwm)") },
 	{ MODKEY|AltMask,			XK_r,		spawn,	SHCMD("kill -HUP $(pidof -s dwm)") },
+	{ MODKEY|AltMask,			XK_l,		spawn,	SHCMD("i3lock -i/home/john/Pictures/sand.png") },
   { MODKEY|AltMask,     XK_s,   spawn,  SHCMD("notify-send \"Going to sleep...\"; systemctl suspend") },
   { MODKEY|AltMask,     XK_x,   spawn,  SHCMD("prompt \"Shutdown now?\" \"shutdown now\"") },
 
@@ -189,10 +193,10 @@ static Key keys[] = {
 
   // App shortcuts
 	{ HYPERKEY,			XK_b,		spawn,		SHCMD("$BROWSER")   },
+	{ HYPERKEY,			XK_e,		spawn,		SHCMD("emacs")   },
 	{ HYPERKEY,			XK_f,		spawn,		SHCMD("$FILE")   },
 	{ HYPERKEY,			XK_d,		spawn,		SHCMD("discord")    },
 	{ HYPERKEY,			XK_s,		spawn,		SHCMD("killall slack ; slack")    },
-	{ HYPERKEY,			XK_q,		spawn,		SHCMD("qtcreator")  },
 	{ HYPERKEY,			XK_t,		spawn,		SHCMD("toggletray") },
 
   // Classes
@@ -204,11 +208,13 @@ static Key keys[] = {
 	{ MODKEY,			  XK_space,		spawn,    {.v = dmenucmd }      },
   { HYPERKEY,     XK_c,       spawn,    SHCMD("dmenuconfig")  },
   { HYPERKEY|ShiftMask,     XK_s,       spawn,    SHCMD("dmenuscripts") },
-  { HYPERKEY,     XK_e,       spawn,    SHCMD("dmenuunicode") },
+  { HYPERKEY|ShiftMask,     XK_e,       spawn,    SHCMD("dmenuunicode") },
   { HYPERKEY,     XK_g,       spawn,    SHCMD("dmenugeant")   },
   { HYPERKEY,     XK_slash,   spawn,    SHCMD("dmenusearch")  },
+  { HYPERKEY|ShiftMask,     XK_b,   spawn,    SHCMD("dmenubooks")  },
   { HYPERKEY,     XK_m,       spawn,    SHCMD("dmenuman")  },
   { HYPERKEY,     XK_l,       spawn,    SHCMD("dmenulatex")  },
+  { HYPERKEY,     XK_q,       spawn,    SHCMD("dmenubqn")  },
 
 };
 
